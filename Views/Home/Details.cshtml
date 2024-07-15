@@ -1,0 +1,36 @@
+﻿@model UserList
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="profile-container mx-auto max-w-sm">
+    <div class="profile-picture mb-5">
+
+        <img src="~/UserImage/@Model.UsePhoto" alt="Profile Picture" class="w-32 h-32 mx-auto rounded-full" />
+    </div>
+    <div class="profile-details">
+        <p><strong>Email Address:</strong> @Model.EmailAddress</p>
+        <p><strong>Full Name:</strong> @Model.FullName</p>
+        <p><strong>Current Address:</strong> @Model.CurrentAddress</p>
+
+    </div>
+    <div class="mt-5">
+        <a asp-action="Edit" asp-route-id="" class="text-white bg-blue-700 px-5 py-2.5 rounded-lg text-center text-sm font-medium hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit Profile</a>
+    </div>
+    <div class="mt-5">
+        <a asp-action="Index" class="text-blue-700 hover:underline dark:text-blue-500">Back to Home</a>
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        text-align: center;
+    }
+
+    .profile-picture img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>

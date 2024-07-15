@@ -1,0 +1,61 @@
+﻿@model UserListEdit
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "_Layout";
+    }
+
+    else
+    {
+        Layout = "_StaticLayout";
+    }
+}
+
+<style>
+    .top{
+        margin-top:100px;
+    }
+</style>
+<div class="top">
+        <form asp-action="Create" asp-controller="Home" class="mt-5 mx-auto max-w-sm" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly"></div>
+       
+        <div class="mb-5 group relative z-0 w-full">
+            <input asp-for="FullName" type="text" class="py-2.5 px-0 text-gray-900 bg-transparent border-gray-300 peer block w-full appearance-none border-0 border-b-2 text-sm focus:outline-none focus:ring-0 focus:border-blue-600 dark:text-white dark:border-gray-600 dark:focus:border-blue-500" placeholder=" " required />
+            <label asp-for="FullName"  class="text-gray-500 -translate-y-6 top-3 origin-[0] absolute -z-10 scale-75 transform text-sm duration-300 dark:text-gray-400 peer-focus:font-medium peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Full Name</label>
+            <span asp-validation-for="FullName" class="text-red-400"></span>
+        </div>
+        <div class="mb-5 group relative z-0 w-full">
+            <input asp-for="EmailAddress" type="email"  class="py-2.5 px-0 text-gray-900 bg-transparent border-gray-300 peer block w-full appearance-none border-0 border-b-2 text-sm focus:outline-none focus:ring-0 focus:border-blue-600 dark:text-white dark:border-gray-600 dark:focus:border-blue-500" placeholder=" " required />
+            <label asp-for="EmailAddress"  class="text-gray-500 -translate-y-6 top-3 origin-[0] absolute -z-10 scale-75 transform text-sm duration-300 dark:text-gray-400 peer-focus:font-medium peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email Address</label>
+            <span asp-validation-for="EmailAddress" class="text-red-400"></span>
+        </div>
+        <div class="mb-5 group relative z-0 w-full">
+            <input asp-for="CurrentAddress"  class="py-2.5 px-0 text-gray-900 bg-transparent border-gray-300 peer block w-full appearance-none border-0 border-b-2 text-sm focus:outline-none focus:ring-0 focus:border-blue-600 dark:text-white dark:border-gray-600 dark:focus:border-blue-500" placeholder=" " required />
+            <label asp-for="CurrentAddress" class="text-gray-500 -translate-y-6 top-3 origin-[0] absolute -z-10 scale-75 transform text-sm duration-300 dark:text-gray-400 peer-focus:font-medium peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"> Address</label>
+            <span asp-validation-for="CurrentAddress" class="text-red-400"></span>
+        </div>
+       
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-5 group relative z-0 w-full">
+                <input asp-for="UserRole"  class="py-2.5 px-0 text-gray-900 bg-transparent border-gray-300 peer block w-full appearance-none border-0 border-b-2 text-sm focus:outline-none focus:ring-0 focus:border-blue-600 dark:text-white dark:border-gray-600 dark:focus:border-blue-500" placeholder=" " required />
+                <label asp-for="UserRole"  class="text-gray-500 -translate-y-6 top-3 origin-[0] absolute -z-10 scale-75 transform text-sm duration-300 dark:text-gray-400 peer-focus:font-medium peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">User Role</label>
+                <span asp-validation-for="UserRole" class="text-red-400"></span>
+            </div>
+            <div class="mb-5 group relative z-0 w-full">
+                <input asp-for="UserPassword" type="password"  class="py-2.5 px-0 text-gray-900 bg-transparent border-gray-300 peer block w-full appearance-none border-0 border-b-2 text-sm focus:outline-none focus:ring-0 focus:border-blue-600 dark:text-white dark:border-gray-600 dark:focus:border-blue-500" placeholder=" " required />
+                <label asp-for="UserPassword" class="text-gray-500 -translate-y-6 top-3 origin-[0] absolute -z-10 scale-75 transform text-sm duration-300 dark:text-gray-400 peer-focus:font-medium peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+                <span asp-validation-for="UserPassword" class="text-red-400"></span>
+            </div>
+        </div>
+        <div class="mb-5 group relative z-0 w-full">
+            <input asp-for="UserFile" type="file"  class="py-2.5 px-0 text-gray-900 bg-transparent border-gray-300 peer block w-full appearance-none border-0 border-b-2 text-sm focus:outline-none focus:ring-0 focus:border-blue-600 dark:text-white dark:border-gray-600 dark:focus:border-blue-500" placeholder=" " required />
+            <label asp-for="UserFile"  class="text-gray-500 -translate-y-6 top-3 origin-[0] absolute -z-10 scale-75 transform text-sm duration-300 dark:text-gray-400 peer-focus:font-medium peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Upload Photo</label>
+            <span asp-validation-for="UserFile" class="text-red-400"></span>
+        </div>
+        
+        <input type="submit" class="btn bg-blue-700 px-5 py-2.5 text-white w-full rounded-lg text-center text-sm font-medium hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 sm:w-auto dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Submit"/>
+    </form>
+</div>
+    
+
