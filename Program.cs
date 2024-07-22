@@ -19,6 +19,12 @@ namespace BlogManagementApp
             builder.Services.AddSingleton<DataSecurityProvider>();
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(o=>o.LoginPath="/Account/Login"); // o=>o. is lamda expression
+            // session add
+            builder.Services.AddSession(o =>
+            {
+                o.IdleTimeout = TimeSpan.FromMinutes(1);
+                o.Cookie.HttpOnly = true;
+            });
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -35,7 +41,7 @@ namespace BlogManagementApp
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

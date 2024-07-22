@@ -82,45 +82,74 @@ namespace BlogManagementApp.Controllers
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Create(UserListEdit u)
         {
-            short maxid;
-            if (_context.UserLists.Any())
-                maxid = Convert.ToInt16(_context.UserLists.Max(x => x.UserId) + 1);
-            else
-                maxid = 1;
-            u.UserId= maxid;
-            
 
-                if (u.UserFile != null)
+            try
+            {
+                var users = _context.UserLists.Where(x=>x.EmailAddress==u.EmailAddress).FirstOrDefault();
+                if (users == null)
                 {
-                    string fileName = "UserImage" + Guid.NewGuid() + Path.GetExtension(u.UserFile.FileName);
-                    string filePath = Path.Combine(_env.WebRootPath, "UserImage", fileName);
-                    using (FileStream stream = new FileStream(filePath, FileMode.Create))
+
+                    Random r = new Random();
+                    HttpContext.Session.SetString("token", r.Next(9999).ToString());
+                    var token = HttpContext.Session.GetString("token");
+
+
+                    short maxid;
+                    if (_context.UserLists.Any())
+                        maxid = Convert.ToInt16(_context.UserLists.Max(x => x.UserId) + 1);
+                    else
+                        maxid = 1;
+                    u.UserId = maxid;
+
+
+                    if (u.UserFile != null)
                     {
-                        u.UserFile.CopyTo(stream);
+                        string fileName = "UserImage" + Guid.NewGuid() + Path.GetExtension(u.UserFile.FileName);
+                        string filePath = Path.Combine(_env.WebRootPath, "UserImage", fileName);
+                        using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            u.UserFile.CopyTo(stream);
+                        }
+                        u.UsePhoto = fileName;
                     }
-                    u.UsePhoto = fileName;
+
+
+                    UserList userList = new()
+                    {
+                        EmailAddress = u.EmailAddress,
+                        FullName = u.FullName,
+                        CurrentAddress = u.CurrentAddress,
+                        UsePhoto = u.UsePhoto,
+                        UserId = u.UserId,
+                        UserPassword = _protector.Protect(u.UserPassword),
+                        UserRole = u.UserRole
+                    };
+
+
+                    _context.Add(userList);
+                    _context.SaveChanges();
+                    return RedirectToAction("Login", "Account");
+
                 }
-
-
-                UserList userList = new()
+                else
                 {
-                    EmailAddress = u.EmailAddress,
-                    FullName = u.FullName,
-                    CurrentAddress = u.CurrentAddress,
-                    UsePhoto = u.UsePhoto,
-                    UserId = u.UserId,
-                    UserPassword =_protector.Protect(u.UserPassword),
-                    UserRole = u.UserRole
-                };
-            
-
-                _context.Add(userList);
-                _context.SaveChanges();
-            return View(u);
+                    ModelState.AddModelError("", "User already exist with this email.!");
+                    return View(u);
+                }
+            }
+            catch
+            {
+                ModelState.AddModelError("", "User Registration Failed. Please try again");
+                return View(u);
+            }
         }
+
+
+        
 
         //partial view
         public IActionResult ProfileImage()

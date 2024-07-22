@@ -11,12 +11,14 @@ namespace BlogManagementApp.Controllers
     {
         private readonly BlogManagementSystemContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IDataProtector _protector;
 
 
-        public BlogController( BlogManagementSystemContext context, IWebHostEnvironment env)
+        public BlogController( BlogManagementSystemContext context, IWebHostEnvironment env, DataSecurityProvider key, IDataProtectionProvider provider)
         { 
             _env = env;
             _context = context;
+            _protector = provider.CreateProtector(key.Key);
         }
 
         // GET: BlogController
@@ -28,11 +30,11 @@ namespace BlogManagementApp.Controllers
                 SectionDescription = e.SectionDescription,
                 SectionHeading = e.SectionHeading,
                 SectionImage = e.SectionImage,
-
                 UploadUserId = e.UploadUserId,
                 UploadUserName = e.UploadUser.FullName,
                 UserProfile = e.UploadUser.UsePhoto,
-                Postdate = e.Postdate
+                Postdate = e.Postdate,
+                EncId = _protector.Protect(e.Bid.ToString())
             }).ToList();
             return View(blogs);
           
@@ -41,8 +43,8 @@ namespace BlogManagementApp.Controllers
         // GET: BlogController/Details/5
         public ActionResult Details(int id)
         {
-            var u = _context.BlogContents.Where(x => x.Bid == id).First();
-            return View(u);
+           
+            return PartialView("_Details");
         }
 
         // GET: BlogController/Create

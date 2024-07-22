@@ -24,5 +24,6 @@ namespace BlogManagementApp.Models
         [DataType(DataType.Upload)]
         public IFormFile? UserFile { get; set; } = null!;
 
+       public string EmailToken { get; set; } = null!;
     }
 }
